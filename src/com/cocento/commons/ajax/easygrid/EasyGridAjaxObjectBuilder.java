@@ -17,18 +17,18 @@ import java.util.regex.Pattern;
 /**
  * Class responsible for building the EasyGridAjaxObject to Json or XML
  * serialization used in EasyGrid
- *
+ * 
  * <p>
  * It serializes the informed columns by the methods
  * </p>
- *
+ * 
  * @see EasyGridAjaxObjectBuilder#setColumn(String)
  * @see EasyGridAjaxObjectBuilder#setCurrencyColumn(String, Locale)
  * @see EasyGridAjaxObjectBuilder#setDateColumn(String, String)
- *
- *
+ * 
+ * 
  * @author Bruno Alvares da Costa
- *
+ * 
  * @see EasyGridAjaxObject
  */
 public class EasyGridAjaxObjectBuilder<T> {
@@ -43,38 +43,43 @@ public class EasyGridAjaxObjectBuilder<T> {
 
 	private final String ESCAPE_DOT = "\\.";
 
+	public EasyGridAjaxObjectBuilder() {
+		objects = new ArrayList();
+	}
+
 	@SuppressWarnings("unchecked")
 	public EasyGridAjaxObjectBuilder(T object) {
 		if (object == null) {
-			throw new IllegalArgumentException("objeto n‹o pode ser nulo");
+			throw new IllegalArgumentException("objeto não pode ser nulo");
 		}
 		objects = Arrays.asList(object);
 	}
 
 	public EasyGridAjaxObjectBuilder(Collection<T> objects) {
 		if (objects == null) {
-			throw new IllegalArgumentException("cole?‹o n‹o pode ser nula");
+			throw new IllegalArgumentException("coleção não pode ser nula");
 		}
 		this.objects = objects;
 	}
 
 	/**
 	 * Method to create the object from a List of ValueObject
-	 *
+	 * 
 	 * @return Populated EasyGridAjaxObject
-	 *
+	 * 
 	 */
 	public EasyGridAjaxObject create() {
 		for (T obj : objects) {
 			result.addRow(returnRow(obj));
 		}
+		
 		result.calculateTotalPages();
 		return result;
 	}
 
 	/**
 	 * Method that informs column for serialization
-	 *
+	 * 
 	 * @param method
 	 *            Name of property
 	 * @return EasyGridAjaxObjectBuilder
@@ -86,7 +91,7 @@ public class EasyGridAjaxObjectBuilder<T> {
 
 	/**
 	 * Method that informs column for serialization with Date formatter
-	 *
+	 * 
 	 * @param method
 	 *            Name of property
 	 * @param dateFormat
@@ -105,7 +110,7 @@ public class EasyGridAjaxObjectBuilder<T> {
 
 	/**
 	 * Method that informs column for serialization with Currency formatter
-	 *
+	 * 
 	 * @param method
 	 *            Name of property
 	 * @param locale
@@ -124,7 +129,7 @@ public class EasyGridAjaxObjectBuilder<T> {
 
 	/**
 	 * Set the current page of pagination
-	 *
+	 * 
 	 * @param page
 	 * @return EasyGridAjaxObjectBuilder
 	 */
@@ -135,7 +140,7 @@ public class EasyGridAjaxObjectBuilder<T> {
 
 	/**
 	 * Set the number of show rows in the grid
-	 *
+	 * 
 	 * @param itensPerPage
 	 * @return EasyGridAjaxObjectBuilder
 	 */
@@ -214,7 +219,7 @@ public class EasyGridAjaxObjectBuilder<T> {
 			builder.append("get".concat(str.substring(0, 1).toUpperCase()).concat(str.substring(1)));
 			i++;
 		}
-//		method.replaceAll(ESCAPE_DOT, ".get");
+		// method.replaceAll(ESCAPE_DOT, ".get");
 
 		Pattern pattern = Pattern.compile("\\.(a-zA-Z)");
 		Matcher matcher = pattern.matcher(method);
