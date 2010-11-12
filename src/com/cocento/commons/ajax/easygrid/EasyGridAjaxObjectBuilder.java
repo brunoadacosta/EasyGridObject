@@ -15,18 +15,18 @@ import java.util.Map;
 /**
  * Class responsible for building the EasyGridAjaxObject to Json or XML
  * serialization used in EasyGrid
- *
+ * 
  * <p>
  * It serializes the informed columns by the methods
  * </p>
- *
+ * 
  * @see EasyGridAjaxObjectBuilder#setColumn(String)
  * @see EasyGridAjaxObjectBuilder#setCurrencyColumn(String, Locale)
  * @see EasyGridAjaxObjectBuilder#setDateColumn(String, String)
- *
- *
+ * 
+ * 
  * @author Bruno Alvares da Costa
- *
+ * 
  * @see EasyGridAjaxObject
  */
 public class EasyGridAjaxObjectBuilder<T> {
@@ -40,6 +40,11 @@ public class EasyGridAjaxObjectBuilder<T> {
 	private final Collection<T> objects;
 
 	private final String ESCAPE_DOT = "\\.";
+
+	@SuppressWarnings("unchecked")
+	public EasyGridAjaxObjectBuilder() {
+		objects = new ArrayList();
+	}
 
 	@SuppressWarnings("unchecked")
 	public EasyGridAjaxObjectBuilder(T object) {
@@ -58,9 +63,9 @@ public class EasyGridAjaxObjectBuilder<T> {
 
 	/**
 	 * Method to create the object from a List of ValueObject
-	 *
+	 * 
 	 * @return Populated EasyGridAjaxObject
-	 *
+	 * 
 	 */
 	public EasyGridAjaxObject create() {
 		for (T obj : objects) {
@@ -72,7 +77,7 @@ public class EasyGridAjaxObjectBuilder<T> {
 
 	/**
 	 * Method that informs column for serialization
-	 *
+	 * 
 	 * @param method
 	 *            Name of property
 	 * @return EasyGridAjaxObjectBuilder
@@ -84,7 +89,7 @@ public class EasyGridAjaxObjectBuilder<T> {
 
 	/**
 	 * Method that informs column for serialization with Date formatter
-	 *
+	 * 
 	 * @param method
 	 *            Name of property
 	 * @param dateFormat
@@ -103,7 +108,7 @@ public class EasyGridAjaxObjectBuilder<T> {
 
 	/**
 	 * Method that informs column for serialization with Currency formatter
-	 *
+	 * 
 	 * @param method
 	 *            Name of property
 	 * @param locale
@@ -122,7 +127,7 @@ public class EasyGridAjaxObjectBuilder<T> {
 
 	/**
 	 * Set the current page of pagination
-	 *
+	 * 
 	 * @param page
 	 * @return EasyGridAjaxObjectBuilder
 	 */
@@ -133,7 +138,7 @@ public class EasyGridAjaxObjectBuilder<T> {
 
 	/**
 	 * Set the number of show rows in the grid
-	 *
+	 * 
 	 * @param itensPerPage
 	 * @return EasyGridAjaxObjectBuilder
 	 */

@@ -16,7 +16,8 @@ public class EasyGridAjaxObjectBuilderTest {
 	private static final ClassA a = new ClassA();
 	private static final ClassB b = new ClassB();
 	private static final Gson gson = new GsonBuilder().serializeNulls().create();
-
+	private static final String cleanJson = "{\"page\":0,\"total\":0,\"records\":0,\"itensPerPage\":10,\"rows\":[]}";
+	
 	@BeforeClass
 	public static void setUpBefore() {
 		a.setAnotherTestString("Unit Test");
@@ -42,15 +43,14 @@ public class EasyGridAjaxObjectBuilderTest {
 		EasyGridAjaxObjectBuilder builder = new EasyGridAjaxObjectBuilder();
 
 		EasyGridAjaxObject obj = builder.create();
-
-		String compareTo = "{\"page\":0,\"total\":0,\"records\":0,\"itensPerPage\":10,\"rows\":[]}";
+		
 
 		String json = gson.toJson(obj);
 
-		assertEquals("Json esperado está incorreto.", compareTo, json);
+		assertEquals("Json esperado está incorreto.", cleanJson, json);
 	}
-	
-	@Test(expected = IllegalArgumentException.class) 
+
+	@Test(expected = IllegalArgumentException.class)
 	public void shouldBeConstructNullObject() {
 		EasyGridAjaxObjectBuilder builder = new EasyGridAjaxObjectBuilder(null);
 	}
