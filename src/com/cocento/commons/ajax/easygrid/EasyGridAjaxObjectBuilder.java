@@ -1,6 +1,5 @@
 package com.cocento.commons.ajax.easygrid;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -11,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import net.vidageek.mirror.dsl.Mirror;
 
 /**
  * Class responsible for building the EasyGridAjaxObject to Json or XML
@@ -33,13 +34,17 @@ public class EasyGridAjaxObjectBuilder<T> {
 
 	private final List<String> columns = new ArrayList<String>(10);
 	private final EasyGridAjaxObject result = new EasyGridAjaxObject();
-	private final Map<String, String> patternDate = new HashMap<String, String>(3);
-	private final Map<String, Locale> patternCurrency = new HashMap<String, Locale>(3);
+	private final Map<String, String> patternDate = new HashMap<String, String>(
+			3);
+	private final Map<String, Locale> patternCurrency = new HashMap<String, Locale>(
+			3);
 	private transient Object sharedObject;
 
 	private final Collection<T> objects;
 
 	private final String ESCAPE_DOT = "\\.";
+
+	private final Mirror mirror = new Mirror();
 
 	@SuppressWarnings("unchecked")
 	public EasyGridAjaxObjectBuilder() {
@@ -99,7 +104,8 @@ public class EasyGridAjaxObjectBuilder<T> {
 	 *            </p>
 	 * @return EasyGridAjaxObjectBuilder
 	 */
-	public EasyGridAjaxObjectBuilder<T> setDateColumn(String method, String dateFormat) {
+	public EasyGridAjaxObjectBuilder<T> setDateColumn(String method,
+			String dateFormat) {
 		String methodName = formatMethodName(method);
 		columns.add(methodName);
 		patternDate.put(methodName, dateFormat);
@@ -118,7 +124,8 @@ public class EasyGridAjaxObjectBuilder<T> {
 	 *            </p>
 	 * @return EasyGridAjaxObjectBuilder
 	 */
-	public EasyGridAjaxObjectBuilder<T> setCurrencyColumn(String method, Locale locale) {
+	public EasyGridAjaxObjectBuilder<T> setCurrencyColumn(String method,
+			Locale locale) {
 		String methodName = formatMethodName(method);
 		columns.add(methodName);
 		patternCurrency.put(methodName, locale);
@@ -147,62 +154,55 @@ public class EasyGridAjaxObjectBuilder<T> {
 		return this;
 	}
 
-	private Method getMethod(String[] methodName) throws SecurityException, NoSuchMethodException,
-			IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	@SuppressWarnings("unchecked")
+	private Method getMethod(String[] methodName) {
 		Method method = null;
 		for (int i = 1; i < methodName.length; i++) {
 			if (methodName.length != (i + 1)) {
-				sharedObject = sharedObject.getClass().getMethod(methodName[i]).invoke(sharedObject);
+				sharedObject = mirror.on(sharedObject).invoke()
+						.method(methodName[i]).withoutArgs();
 				continue;
 			}
-			method = sharedObject.getClass().getMethod(methodName[i]);
+			method = mirror.on(sharedObject.getClass()).reflect()
+					.method(methodName[i]).withoutArgs();
 		}
 		return method;
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<String> returnRow(Object obj) {
 		List<String> row = new ArrayList<String>(columns.size());
-		try {
-			for (String methodName : columns) {
-				Method method;
-				// verify exists complex type
-				if (methodName.contains(".")) {
-					String[] methodNames = methodName.split(ESCAPE_DOT);
-					method = obj.getClass().getMethod(methodNames[0]);
-					sharedObject = method.invoke(obj);
-					method = getMethod(methodNames);
-					row.add(getValue(method, sharedObject));
-				} else {
-					method = obj.getClass().getMethod(methodName);
+		for (String methodName : columns) {
+			Method method;
+			// verify exists complex type
+			if (methodName.contains(".")) {
+				String[] methodNames = methodName.split(ESCAPE_DOT);
+				sharedObject = mirror.on(obj).invoke().method(methodNames[0])
+						.withoutArgs();
+				method = getMethod(methodNames);
+				row.add(getValue(method, sharedObject));
+			} else {
+				method = mirror.on(obj.getClass()).reflect().method(methodName)
+						.withoutArgs();
 
-					row.add(getValue(method, obj));
-				}
+				row.add(getValue(method, obj));
 			}
-		} catch (IllegalArgumentException e) {
-			throw new RuntimeException(e);
-		} catch (SecurityException e) {
-			throw new RuntimeException(e);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		} catch (InvocationTargetException e) {
-			throw new RuntimeException(e);
-		} catch (NoSuchMethodException e) {
-			throw new RuntimeException(e);
 		}
 		return row;
 	}
 
-	private String getValue(Method method, Object obj) throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		Object result = method.invoke(obj);
+	private String getValue(Method method, Object obj) {
+		Object result = mirror.on(obj).invoke().method(method).withoutArgs();
 		if (result == null) {
 			return "";
 		}
 		if (patternDate.containsKey(method.getName())) {
-			return new SimpleDateFormat(patternDate.get(method.getName())).format(result);
+			return new SimpleDateFormat(patternDate.get(method.getName()))
+					.format(result);
 		}
 		if (patternCurrency.containsKey(method.getName())) {
-			return NumberFormat.getCurrencyInstance(patternCurrency.get(method.getName())).format(result);
+			return NumberFormat.getCurrencyInstance(
+					patternCurrency.get(method.getName())).format(result);
 		}
 		return result.toString();
 	}
@@ -214,7 +214,8 @@ public class EasyGridAjaxObjectBuilder<T> {
 			if (i > 0) {
 				builder.append(".");
 			}
-			builder.append("get".concat(str.substring(0, 1).toUpperCase()).concat(str.substring(1)));
+			builder.append("get".concat(str.substring(0, 1).toUpperCase())
+					.concat(str.substring(1)));
 			i++;
 		}
 		return builder.toString();
