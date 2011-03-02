@@ -14,7 +14,7 @@ public class EasyGridAjaxObject implements Serializable {
 	private static final long serialVersionUID = 4387790711175701433L;
 
 	private int page;
-	private int total;
+	private int pagesize;
 	private int records;
 	private int itensPerPage = 10;
 	private final List<List<String>> rows = new ArrayList<List<String>>();
@@ -28,8 +28,8 @@ public class EasyGridAjaxObject implements Serializable {
 		return page;
 	}
 
-	public int getTotal() {
-		return total;
+	public int getPagesize() {
+		return pagesize;
 	}
 
 	public int getRecords() {
@@ -54,7 +54,7 @@ public class EasyGridAjaxObject implements Serializable {
 	}
 
 	public void calculateTotalPages() {
-		this.total = records / itensPerPage + records % itensPerPage == 0 ? 0 : 1;
+		this.pagesize = records / itensPerPage + records % itensPerPage == 0 ? 0 : 1;
 	}
 
 }

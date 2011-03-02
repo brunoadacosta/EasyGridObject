@@ -34,10 +34,8 @@ public class EasyGridAjaxObjectBuilder<T> {
 
 	private final List<String> columns = new ArrayList<String>(10);
 	private final EasyGridAjaxObject result = new EasyGridAjaxObject();
-	private final Map<String, String> patternDate = new HashMap<String, String>(
-			3);
-	private final Map<String, Locale> patternCurrency = new HashMap<String, Locale>(
-			3);
+	private final Map<String, String> patternDate = new HashMap<String, String>(3);
+	private final Map<String, Locale> patternCurrency = new HashMap<String, Locale>(3);
 	private transient Object sharedObject;
 
 	private final Collection<T> objects;
@@ -104,8 +102,7 @@ public class EasyGridAjaxObjectBuilder<T> {
 	 *            </p>
 	 * @return EasyGridAjaxObjectBuilder
 	 */
-	public EasyGridAjaxObjectBuilder<T> setDateColumn(String method,
-			String dateFormat) {
+	public EasyGridAjaxObjectBuilder<T> setDateColumn(String method, String dateFormat) {
 		String methodName = formatMethodName(method);
 		columns.add(methodName);
 		patternDate.put(methodName, dateFormat);
@@ -124,8 +121,7 @@ public class EasyGridAjaxObjectBuilder<T> {
 	 *            </p>
 	 * @return EasyGridAjaxObjectBuilder
 	 */
-	public EasyGridAjaxObjectBuilder<T> setCurrencyColumn(String method,
-			Locale locale) {
+	public EasyGridAjaxObjectBuilder<T> setCurrencyColumn(String method, Locale locale) {
 		String methodName = formatMethodName(method);
 		columns.add(methodName);
 		patternCurrency.put(methodName, locale);
@@ -159,12 +155,10 @@ public class EasyGridAjaxObjectBuilder<T> {
 		Method method = null;
 		for (int i = 1; i < methodName.length; i++) {
 			if (methodName.length != (i + 1)) {
-				sharedObject = mirror.on(sharedObject).invoke()
-						.method(methodName[i]).withoutArgs();
+				sharedObject = mirror.on(sharedObject).invoke().method(methodName[i]).withoutArgs();
 				continue;
 			}
-			method = mirror.on(sharedObject.getClass()).reflect()
-					.method(methodName[i]).withoutArgs();
+			method = mirror.on(sharedObject.getClass()).reflect().method(methodName[i]).withoutArgs();
 		}
 		return method;
 	}
@@ -173,17 +167,14 @@ public class EasyGridAjaxObjectBuilder<T> {
 	private List<String> returnRow(Object obj) {
 		List<String> row = new ArrayList<String>(columns.size());
 		for (String methodName : columns) {
-			Method method;
 			// verify exists complex type
 			if (methodName.contains(".")) {
 				String[] methodNames = methodName.split(ESCAPE_DOT);
-				sharedObject = mirror.on(obj).invoke().method(methodNames[0])
-						.withoutArgs();
-				method = getMethod(methodNames);
+				sharedObject = mirror.on(obj).invoke().method(methodNames[0]).withoutArgs();
+				Method method = getMethod(methodNames);
 				row.add(getValue(method, sharedObject));
 			} else {
-				method = mirror.on(obj.getClass()).reflect().method(methodName)
-						.withoutArgs();
+				Method method = mirror.on(obj.getClass()).reflect().method(methodName).withoutArgs();
 
 				row.add(getValue(method, obj));
 			}
@@ -197,12 +188,10 @@ public class EasyGridAjaxObjectBuilder<T> {
 			return "";
 		}
 		if (patternDate.containsKey(method.getName())) {
-			return new SimpleDateFormat(patternDate.get(method.getName()))
-					.format(result);
+			return new SimpleDateFormat(patternDate.get(method.getName())).format(result);
 		}
 		if (patternCurrency.containsKey(method.getName())) {
-			return NumberFormat.getCurrencyInstance(
-					patternCurrency.get(method.getName())).format(result);
+			return NumberFormat.getCurrencyInstance(patternCurrency.get(method.getName())).format(result);
 		}
 		return result.toString();
 	}
@@ -214,8 +203,7 @@ public class EasyGridAjaxObjectBuilder<T> {
 			if (i > 0) {
 				builder.append(".");
 			}
-			builder.append("get".concat(str.substring(0, 1).toUpperCase())
-					.concat(str.substring(1)));
+			builder.append("get".concat(str.substring(0, 1).toUpperCase()).concat(str.substring(1)));
 			i++;
 		}
 		return builder.toString();

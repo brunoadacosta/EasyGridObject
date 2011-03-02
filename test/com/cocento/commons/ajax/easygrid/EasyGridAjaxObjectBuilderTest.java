@@ -16,8 +16,8 @@ public class EasyGridAjaxObjectBuilderTest {
 	private static final ClassA a = new ClassA();
 	private static final ClassB b = new ClassB();
 	private static final Gson gson = new GsonBuilder().serializeNulls().create();
-	private static final String cleanJson = "{\"page\":0,\"total\":0,\"records\":0,\"itensPerPage\":10,\"rows\":[]}";
-	
+	private static final String cleanJson = "{\"page\":0,\"pagesize\":0,\"records\":0,\"itensPerPage\":10,\"rows\":[]}";
+
 	@BeforeClass
 	public static void setUpBefore() {
 		a.setAnotherTestString("Unit Test");
@@ -43,7 +43,6 @@ public class EasyGridAjaxObjectBuilderTest {
 		EasyGridAjaxObjectBuilder builder = new EasyGridAjaxObjectBuilder();
 
 		EasyGridAjaxObject obj = builder.create();
-		
 
 		String json = gson.toJson(obj);
 
