@@ -1,4 +1,4 @@
-EasyGridAjaxObject
+EasyGridObject
 ==================
 
 Como Usar
@@ -11,7 +11,10 @@ class Objeto {
 
 List<Objeto> lista = new ArrayList<Objeto>();
 
-EasyGridAjaxObject ajaxObject = new EasyGridAjaxObjectBuilder<Objeto>(lista).setColumn("nome").create();
+// Adicionado total de registros para paginação
+long totalDeRegistros = 
+
+EasyGridAjaxObject ajaxObject = new EasyGridAjaxObjectBuilder<Objeto>(lista, totalDeRegistros).setColumn("nome").create();
 
 //serializar json usando Gson
 String json = new Gson().toJson(ajaxObject);
