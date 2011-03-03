@@ -16,7 +16,7 @@ public class EasyGridAjaxObjectBuilderTest {
 	private static final ClassA a = new ClassA();
 	private static final ClassB b = new ClassB();
 	private static final Gson gson = new GsonBuilder().serializeNulls().create();
-	private static final String cleanJson = "{\"page\":0,\"pagesize\":0,\"records\":0,\"itensPerPage\":10,\"rows\":[]}";
+	private static final String cleanJson = "{\"page\":1,\":0,\"records\":0,\"itensPerPage\":10,\"rows\":[id:\"\", cell[]]}";
 
 	@BeforeClass
 	public static void setUpBefore() {
@@ -31,18 +31,18 @@ public class EasyGridAjaxObjectBuilderTest {
 	@Test
 	public void shouldBeReturnEmptyObject() {
 
-		EasyGridAjaxObjectBuilder builder = new EasyGridAjaxObjectBuilder();
+		EasyGridObjectBuilder builder = new EasyGridObjectBuilder();
 
-		EasyGridAjaxObject obj = builder.create();
+		EasyGridObject obj = builder.create();
 
 		assertNotNull(obj);
 	}
 
 	@Test
 	public void shouldBeReturnEmptyFormattedJsonObject() {
-		EasyGridAjaxObjectBuilder builder = new EasyGridAjaxObjectBuilder();
+		EasyGridObjectBuilder builder = new EasyGridObjectBuilder();
 
-		EasyGridAjaxObject obj = builder.create();
+		EasyGridObject obj = builder.create();
 
 		String json = gson.toJson(obj);
 
@@ -51,6 +51,6 @@ public class EasyGridAjaxObjectBuilderTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void shouldBeConstructNullObject() {
-		EasyGridAjaxObjectBuilder builder = new EasyGridAjaxObjectBuilder(null);
+		EasyGridObjectBuilder builder = new EasyGridObjectBuilder(null);
 	}
 }

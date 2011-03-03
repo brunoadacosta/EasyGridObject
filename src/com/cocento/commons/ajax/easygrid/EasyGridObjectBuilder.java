@@ -21,47 +21,52 @@ import net.vidageek.mirror.dsl.Mirror;
  * It serializes the informed columns by the methods
  * </p>
  * 
- * @see EasyGridAjaxObjectBuilder#setColumn(String)
- * @see EasyGridAjaxObjectBuilder#setCurrencyColumn(String, Locale)
- * @see EasyGridAjaxObjectBuilder#setDateColumn(String, String)
+ * @see EasyGridObjectBuilder#setColumn(String)
+ * @see EasyGridObjectBuilder#setCurrencyColumn(String, Locale)
+ * @see EasyGridObjectBuilder#setDateColumn(String, String)
  * 
  * 
  * @author Bruno Alvares da Costa
  * 
- * @see EasyGridAjaxObject
+ * @see EasyGridObject
  */
-public class EasyGridAjaxObjectBuilder<T> {
+public class EasyGridObjectBuilder<T> {
 
 	private final List<String> columns = new ArrayList<String>(10);
-	private final EasyGridAjaxObject result = new EasyGridAjaxObject();
+	private final EasyGridObject result = new EasyGridObject();
 	private final Map<String, String> patternDate = new HashMap<String, String>(3);
 	private final Map<String, Locale> patternCurrency = new HashMap<String, Locale>(3);
 	private transient Object sharedObject;
 
 	private final Collection<T> objects;
 
+	private final Long totalRecords;
+
 	private final String ESCAPE_DOT = "\\.";
 
 	private final Mirror mirror = new Mirror();
 
 	@SuppressWarnings("unchecked")
-	public EasyGridAjaxObjectBuilder() {
+	public EasyGridObjectBuilder() {
 		objects = new ArrayList();
+		this.totalRecords = 0L;
 	}
 
 	@SuppressWarnings("unchecked")
-	public EasyGridAjaxObjectBuilder(T object) {
+	public EasyGridObjectBuilder(T object) {
 		if (object == null) {
 			throw new IllegalArgumentException("objeto não pode ser nulo");
 		}
 		objects = Arrays.asList(object);
+		this.totalRecords = 1L;
 	}
 
-	public EasyGridAjaxObjectBuilder(Collection<T> objects) {
+	public EasyGridObjectBuilder(Collection<T> objects, Long totalRecords) {
 		if (objects == null) {
-			throw new IllegalArgumentException("cole?ão não pode ser nula");
+			throw new IllegalArgumentException("coleção não pode ser nula");
 		}
 		this.objects = objects;
+		this.totalRecords = totalRecords;
 	}
 
 	/**
@@ -70,10 +75,15 @@ public class EasyGridAjaxObjectBuilder<T> {
 	 * @return Populated EasyGridAjaxObject
 	 * 
 	 */
-	public EasyGridAjaxObject create() {
+	public EasyGridObject create() {
 		for (T obj : objects) {
-			result.addRow(returnRow(obj));
+			EasyGridRow row = new EasyGridRow();
+			row.setId((Long) mirror.on(obj).get().field("id"));
+			row.setCell(returnRow(obj));
+
+			result.addRow(row);
 		}
+		result.setRecords(totalRecords);
 		result.calculateTotalPages();
 		return result;
 	}
@@ -85,7 +95,7 @@ public class EasyGridAjaxObjectBuilder<T> {
 	 *            Name of property
 	 * @return EasyGridAjaxObjectBuilder
 	 */
-	public EasyGridAjaxObjectBuilder<T> setColumn(String method) {
+	public EasyGridObjectBuilder<T> setColumn(String method) {
 		columns.add(formatMethodName(method));
 		return this;
 	}
@@ -102,7 +112,7 @@ public class EasyGridAjaxObjectBuilder<T> {
 	 *            </p>
 	 * @return EasyGridAjaxObjectBuilder
 	 */
-	public EasyGridAjaxObjectBuilder<T> setDateColumn(String method, String dateFormat) {
+	public EasyGridObjectBuilder<T> setDateColumn(String method, String dateFormat) {
 		String methodName = formatMethodName(method);
 		columns.add(methodName);
 		patternDate.put(methodName, dateFormat);
@@ -121,7 +131,7 @@ public class EasyGridAjaxObjectBuilder<T> {
 	 *            </p>
 	 * @return EasyGridAjaxObjectBuilder
 	 */
-	public EasyGridAjaxObjectBuilder<T> setCurrencyColumn(String method, Locale locale) {
+	public EasyGridObjectBuilder<T> setCurrencyColumn(String method, Locale locale) {
 		String methodName = formatMethodName(method);
 		columns.add(methodName);
 		patternCurrency.put(methodName, locale);
@@ -134,7 +144,7 @@ public class EasyGridAjaxObjectBuilder<T> {
 	 * @param page
 	 * @return EasyGridAjaxObjectBuilder
 	 */
-	public EasyGridAjaxObjectBuilder<T> setPage(int page) {
+	public EasyGridObjectBuilder<T> setPage(int page) {
 		result.setPage(page);
 		return this;
 	}
@@ -145,7 +155,7 @@ public class EasyGridAjaxObjectBuilder<T> {
 	 * @param itensPerPage
 	 * @return EasyGridAjaxObjectBuilder
 	 */
-	public EasyGridAjaxObjectBuilder<T> setItensPerPage(int itensPerPage) {
+	public EasyGridObjectBuilder<T> setItensPerPage(int itensPerPage) {
 		this.result.setItensPerPage(itensPerPage);
 		return this;
 	}

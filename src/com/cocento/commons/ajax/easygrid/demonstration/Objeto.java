@@ -8,6 +8,8 @@ public class Objeto implements Serializable {
 
 	private static final long serialVersionUID = -582070988424624954L;
 
+	private Long id;
+
 	private String name;
 
 	private Integer inteiro;
@@ -17,11 +19,11 @@ public class Objeto implements Serializable {
 	private Date date2;
 
 	private Long longo;
-	
+
 	private BigDecimal price;
-	
+
 	private Double price2;
-	
+
 	private ClassA classA;
 
 	public String getName() {
@@ -86,5 +88,13 @@ public class Objeto implements Serializable {
 
 	public void setClassA(ClassA classA) {
 		this.classA = classA;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getId() {
+		return id;
 	}
 }

@@ -6,8 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import com.cocento.commons.ajax.easygrid.EasyGridAjaxObject;
-import com.cocento.commons.ajax.easygrid.EasyGridAjaxObjectBuilder;
+import com.cocento.commons.ajax.easygrid.EasyGridObject;
+import com.cocento.commons.ajax.easygrid.EasyGridObjectBuilder;
 import com.google.gson.Gson;
 
 public class Main {
@@ -19,15 +19,18 @@ public class Main {
 		// TODO Auto-generated method stub
 
 		ClassB classB = new ClassB();
+		classB.setId(1L);
 		classB.setName("Class B");
 
 		ClassA classA = new ClassA();
+		classA.setId(2L);
 		classA.setTestString("Test String");
 		classA.setAnotherTestString("Another Test String");
 		classA.setNumber(100);
 		classA.setClassB(classB);
 
 		Objeto obj = new Objeto();
+		obj.setId(10L);
 		obj.setName("Object 1");
 		obj.setDate(new Date());
 		obj.setDate2(new Date());
@@ -38,15 +41,18 @@ public class Main {
 		obj.setClassA(classA);
 
 		ClassB classB1 = new ClassB();
+		classB1.setId(100L);
 		classB1.setName("Another Class B");
 
 		ClassA classA1 = new ClassA();
+		classA1.setId(101L);
 		classA1.setTestString("Test String Object 2");
 		classA1.setAnotherTestString("Another Test String Object 2");
 		classA1.setNumber(200);
 		classA1.setClassB(classB1);
 
 		Objeto obj2 = new Objeto();
+		obj2.setId(103L);
 		obj2.setName("Object 2");
 		obj2.setDate(new Date());
 		obj2.setDate2(new Date());
@@ -61,11 +67,10 @@ public class Main {
 		lst.add(obj);
 		lst.add(obj2);
 
-		EasyGridAjaxObject ajaxObject = new EasyGridAjaxObjectBuilder<Objeto>(lst).setColumn("classA.classB.name")
-				.setColumn("classA.testString").setColumn("name").setColumn("inteiro")
-				.setDateColumn("date", "dd/MM/yyyy").setDateColumn("date2", "dd/MM/yyyy HH:mm").setColumn("longo")
-				.setCurrencyColumn("price", new Locale("pt", "BR")).setCurrencyColumn("price2", new Locale("en", "US"))
-				.create();
+		EasyGridObject ajaxObject = new EasyGridObjectBuilder<Objeto>(lst, 2L).setColumn("classA.classB.name")
+				.setColumn("classA.testString").setColumn("name").setColumn("inteiro").setDateColumn("date", "dd/MM/yyyy")
+				.setDateColumn("date2", "dd/MM/yyyy HH:mm").setColumn("longo").setCurrencyColumn("price", new Locale("pt", "BR"))
+				.setCurrencyColumn("price2", new Locale("en", "US")).create();
 
 		System.out.println(new Gson().toJson(ajaxObject));
 
