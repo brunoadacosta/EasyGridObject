@@ -73,6 +73,5 @@ public class Main {
 				.setCurrencyColumn("price2", new Locale("en", "US")).create();
 
 		System.out.println(new Gson().toJson(ajaxObject));
-
 	}
 }

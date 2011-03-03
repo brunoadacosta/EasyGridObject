@@ -16,7 +16,7 @@ public class EasyGridAjaxObjectBuilderTest {
 	private static final ClassA a = new ClassA();
 	private static final ClassB b = new ClassB();
 	private static final Gson gson = new GsonBuilder().serializeNulls().create();
-	private static final String cleanJson = "{\"page\":1,\":0,\"records\":0,\"itensPerPage\":10,\"rows\":[id:\"\", cell[]]}";
+	private static final String CLEAN_JSON = "{\"page\":1,\"records\":0,\"currentRecords\":0,\"rows\":[]}";
 
 	@BeforeClass
 	public static void setUpBefore() {
@@ -46,7 +46,7 @@ public class EasyGridAjaxObjectBuilderTest {
 
 		String json = gson.toJson(obj);
 
-		assertEquals("Json esperado está incorreto.", cleanJson, json);
+		assertEquals("Json esperado está incorreto.", CLEAN_JSON, json);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
