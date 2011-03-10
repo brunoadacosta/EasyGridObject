@@ -13,6 +13,10 @@ import java.util.Map;
 
 import net.vidageek.mirror.dsl.Mirror;
 
+import org.joda.time.base.BaseLocal;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 /**
  * Class responsible for building the EasyGridAjaxObject to Json or XML
  * serialization used in EasyGrid
@@ -85,6 +89,15 @@ public class EasyGridObjectBuilder<T> {
 		}
 		result.setRecords(totalRecords);
 		result.calculateTotalPages();
+		return result;
+	}
+
+	public EasyGridObject empty() {
+		EasyGridRow row = new EasyGridRow();
+
+		result.addRow(row);
+		result.setRecords(0);
+
 		return result;
 	}
 
@@ -197,7 +210,13 @@ public class EasyGridObjectBuilder<T> {
 		if (result == null) {
 			return "";
 		}
+
 		if (patternDate.containsKey(method.getName())) {
+			if (result instanceof BaseLocal) {
+				DateTimeFormatter formatter = DateTimeFormat.forPattern(patternDate.get(method.getName()));
+				BaseLocal baseDate = (BaseLocal) result;
+				return baseDate.toString(formatter);
+			}
 			return new SimpleDateFormat(patternDate.get(method.getName())).format(result);
 		}
 		if (patternCurrency.containsKey(method.getName())) {

@@ -16,7 +16,7 @@ public class EasyGridAjaxObjectBuilderTest {
 	private static final ClassA a = new ClassA();
 	private static final ClassB b = new ClassB();
 	private static final Gson gson = new GsonBuilder().serializeNulls().create();
-	private static final String cleanJson = "{\"page\":1,\":0,\"records\":0,\"itensPerPage\":10,\"rows\":[id:\"\", cell[]]}";
+	private static final String cleanJson = "{\"page\":1,\":0,\"records\":0,\"rows\":[id:\"\", cell[]]}";
 
 	@BeforeClass
 	public static void setUpBefore() {

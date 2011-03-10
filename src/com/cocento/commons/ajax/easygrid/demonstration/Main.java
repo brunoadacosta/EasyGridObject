@@ -6,9 +6,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.joda.time.LocalDate;
+
 import com.cocento.commons.ajax.easygrid.EasyGridObject;
 import com.cocento.commons.ajax.easygrid.EasyGridObjectBuilder;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class Main {
 
@@ -39,6 +42,7 @@ public class Main {
 		obj.setPrice(new BigDecimal("999.99"));
 		obj.setPrice2(999.99);
 		obj.setClassA(classA);
+		obj.setDataJoda(new LocalDate().plusDays(1));
 
 		ClassB classB1 = new ClassB();
 		classB1.setId(100L);
@@ -61,18 +65,23 @@ public class Main {
 		obj2.setPrice(new BigDecimal("5900.99"));
 		obj2.setPrice2(5900.99);
 		obj2.setClassA(classA1);
+		obj2.setDataJoda(new LocalDate().plusDays(2));
 
 		List<Objeto> lst = new ArrayList<Objeto>(2);
 
 		lst.add(obj);
 		lst.add(obj2);
 
-		EasyGridObject ajaxObject = new EasyGridObjectBuilder<Objeto>(lst, 2L).setColumn("classA.classB.name")
-				.setColumn("classA.testString").setColumn("name").setColumn("inteiro").setDateColumn("date", "dd/MM/yyyy")
-				.setDateColumn("date2", "dd/MM/yyyy HH:mm").setColumn("longo").setCurrencyColumn("price", new Locale("pt", "BR"))
-				.setCurrencyColumn("price2", new Locale("en", "US")).create();
+		EasyGridObject ajaxObject = new EasyGridObjectBuilder<Objeto>(lst, 2L).setDateColumn("dataJoda", "dd/MM/yyyy")
+				.setColumn("classA.classB.name").setColumn("classA.testString").setColumn("name").setColumn("inteiro")
+				.setDateColumn("date", "dd/MM/yyyy").setDateColumn("date2", "dd/MM/yyyy HH:mm").setColumn("longo")
+				.setCurrencyColumn("price", new Locale("pt", "BR")).setCurrencyColumn("price2", new Locale("en", "US")).create();
+
+		Gson gson = new GsonBuilder().create();
 
 		System.out.println(new Gson().toJson(ajaxObject));
+
+		System.out.println(gson.toJson(new EasyGridObjectBuilder<Objeto>().empty()));
 
 	}
 }

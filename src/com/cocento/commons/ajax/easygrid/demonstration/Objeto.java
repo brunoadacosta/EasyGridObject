@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.joda.time.LocalDate;
+
 public class Objeto implements Serializable {
 
 	private static final long serialVersionUID = -582070988424624954L;
@@ -25,6 +27,8 @@ public class Objeto implements Serializable {
 	private Double price2;
 
 	private ClassA classA;
+
+	private LocalDate dataJoda;
 
 	public String getName() {
 		return name;
@@ -96,5 +100,13 @@ public class Objeto implements Serializable {
 
 	public Long getId() {
 		return id;
+	}
+
+	public void setDataJoda(LocalDate dataJoda) {
+		this.dataJoda = dataJoda;
+	}
+
+	public LocalDate getDataJoda() {
+		return dataJoda;
 	}
 }

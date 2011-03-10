@@ -16,7 +16,7 @@ public class EasyGridObject implements Serializable {
 	private int page = 1;
 	private transient int pagesize;
 	private long records;
-	private int currentRecords;
+	private transient int currentRecords;
 	private transient int itensPerPage = 10;
 	private final List<EasyGridRow> rows = new ArrayList<EasyGridRow>();
 
