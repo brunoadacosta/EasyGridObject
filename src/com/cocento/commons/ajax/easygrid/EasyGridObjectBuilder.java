@@ -59,7 +59,7 @@ public class EasyGridObjectBuilder<T> {
 	@SuppressWarnings("unchecked")
 	public EasyGridObjectBuilder(T object) {
 		if (object == null) {
-			throw new IllegalArgumentException("objeto não pode ser nulo");
+			throw new IllegalArgumentException("objeto n√£o pode ser nulo");
 		}
 		objects = Arrays.asList(object);
 		this.totalRecords = 1L;
@@ -67,7 +67,7 @@ public class EasyGridObjectBuilder<T> {
 
 	public EasyGridObjectBuilder(Collection<T> objects, Long totalRecords) {
 		if (objects == null) {
-			throw new IllegalArgumentException("coleção não pode ser nula");
+			throw new IllegalArgumentException("cole√ß√£o n√£o pode ser nula");
 		}
 		this.objects = objects;
 		this.totalRecords = totalRecords;
