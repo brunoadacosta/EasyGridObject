@@ -40,7 +40,6 @@ public class EasyGridObjectBuilder<T> {
 	private final EasyGridObject result = new EasyGridObject();
 	private final Map<String, String> patternDate = new HashMap<String, String>(5);
 	private final Map<String, Locale> patternCurrency = new HashMap<String, Locale>(5);
-	private final List<String> booleanColumns = new ArrayList<String>(3);
 	private transient Object sharedObject;
 
 	private final Collection<T> objects;
