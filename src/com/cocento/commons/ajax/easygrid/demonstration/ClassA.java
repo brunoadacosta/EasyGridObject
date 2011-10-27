@@ -11,6 +11,11 @@ public class ClassA implements Serializable {
 	private String anotherTestString;
 	private Integer number;
 	private ClassB classB;
+	private Boolean ativo;
+
+	public ClassA() {
+		this.ativo = true;
+	}
 
 	public String getTestString() {
 		return testString;
@@ -50,6 +55,14 @@ public class ClassA implements Serializable {
 
 	public Long getId() {
 		return id;
+	}
+
+	public Boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 
 }

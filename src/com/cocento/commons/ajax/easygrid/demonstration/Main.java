@@ -75,7 +75,8 @@ public class Main {
 		EasyGridObject ajaxObject = new EasyGridObjectBuilder<Objeto>(lst, 2L).setDateColumn("dataJoda", "dd/MM/yyyy")
 				.setColumn("classA.classB.name").setColumn("classA.testString").setColumn("name").setColumn("inteiro")
 				.setDateColumn("date", "dd/MM/yyyy").setDateColumn("date2", "dd/MM/yyyy HH:mm").setColumn("longo")
-				.setCurrencyColumn("price", new Locale("pt", "BR")).setCurrencyColumn("price2", new Locale("en", "US")).create();
+				.setCurrencyColumn("price", new Locale("pt", "BR")).setCurrencyColumn("price2", new Locale("en", "US"))
+				.setColumn("classA.isAtivo").create();
 
 		Gson gson = new GsonBuilder().create();
 

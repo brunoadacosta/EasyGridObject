@@ -38,8 +38,9 @@ public class EasyGridObjectBuilder<T> {
 
 	private final List<String> columns = new ArrayList<String>(10);
 	private final EasyGridObject result = new EasyGridObject();
-	private final Map<String, String> patternDate = new HashMap<String, String>(3);
-	private final Map<String, Locale> patternCurrency = new HashMap<String, Locale>(3);
+	private final Map<String, String> patternDate = new HashMap<String, String>(5);
+	private final Map<String, Locale> patternCurrency = new HashMap<String, Locale>(5);
+	private final List<String> booleanColumns = new ArrayList<String>(3);
 	private transient Object sharedObject;
 
 	private final Collection<T> objects;
@@ -232,7 +233,11 @@ public class EasyGridObjectBuilder<T> {
 			if (i > 0) {
 				builder.append(".");
 			}
-			builder.append("get".concat(str.substring(0, 1).toUpperCase()).concat(str.substring(1)));
+			if (str.substring(0, 2).equals("is")) {
+				builder.append(str);
+			} else {
+				builder.append("get".concat(str.substring(0, 1).toUpperCase()).concat(str.substring(1)));
+			}
 			i++;
 		}
 		return builder.toString();
