@@ -50,9 +50,8 @@ public class EasyGridObjectBuilder<T> {
 
 	private final Mirror mirror = new Mirror();
 
-	@SuppressWarnings("unchecked")
 	public EasyGridObjectBuilder() {
-		objects = new ArrayList();
+		objects = new ArrayList<T>();
 		this.totalRecords = 0L;
 	}
 
@@ -173,7 +172,6 @@ public class EasyGridObjectBuilder<T> {
 		return this;
 	}
 
-	@SuppressWarnings("unchecked")
 	private Method getMethod(String[] methodName) {
 		Method method = null;
 		for (int i = 1; i < methodName.length; i++) {
@@ -186,7 +184,6 @@ public class EasyGridObjectBuilder<T> {
 		return method;
 	}
 
-	@SuppressWarnings("unchecked")
 	private List<String> returnRow(Object obj) {
 		List<String> row = new ArrayList<String>(columns.size());
 		for (String methodName : columns) {
